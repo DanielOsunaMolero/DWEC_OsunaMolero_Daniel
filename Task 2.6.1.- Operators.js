@@ -23,9 +23,6 @@ console.log(undefined == null);//True : Son considerados iguales con el doble op
 console.log(undefined === null);//False : Con la igualdad estricta salta false ya que son de diferente tipo 
 console.log(null == "\n0\n");// False: En una comparacion de igualdad debil unicamente undefined es igual a null
 console.log(null === +"\n0\n");// False: En una comparacion de igualdad fuerte y no son del mismo tipo number!=object
-
-/* 4.What are the results of these expressions?
- */
 console.log("" + 1 + 0);// 10 : Los numeros se estan sumando a una cadena de texto
 console.log("" - 1 + 0);// -1 : La cadena vacia se convierte en un 0 y se le resta el -1
 console.log(true + false);// 1 : El true se convierte a 1 y el false a 0 --> 1+0 =1
@@ -41,6 +38,12 @@ console.log(null + 1); // `null` se convierte a 0, por lo tanto, 0 + 1 = 1.
 console.log(undefined + 1); // `undefined` no se puede convertir en número.
 console.log(" \t \n" - 2); // La cadena solo contiene espacios en blanco, que se convierten a 0, por lo tanto, 0 - 2 = -2.
 
+/* 5.Here’s a code that asks the user for two numbers and shows their sum. It works incorrectly.
+The output in the example below is 12 (for default prompt values). Why? Fix it. The result
+should be 3*/
 
+let p = prompt("First number?", 1);
+let o = prompt("Second number?", 2);
+alert(p + o); // 12
 
-
+//Lo que funciona incorrectamente es que  se suman como cadenas de texto no se multiplican como nnumeros
