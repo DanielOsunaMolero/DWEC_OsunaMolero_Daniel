@@ -42,8 +42,14 @@ console.log(" \t \n" - 2); // La cadena solo contiene espacios en blanco, que se
 The output in the example below is 12 (for default prompt values). Why? Fix it. The result
 should be 3*/
 
+/*let p = prompt("First number?", 1);
+let o = prompt("Second number?", 2);
+alert("p" + "o"); // 12*/ 
+
+//Lo que funciona incorrectamente es que  se suman como cadenas de texto no se multiplican como nnumeros.
+//Aqui esta el codigo arreglado
 let p = prompt("First number?", 1);
 let o = prompt("Second number?", 2);
-alert(p + o); // 12
-
-//Lo que funciona incorrectamente es que  se suman como cadenas de texto no se multiplican como nnumeros
+let num1 = Number(p);
+let num2 = Number(o);
+alert(num1 + num2);
