@@ -42,41 +42,49 @@ let persona3 ={
 
 //factoty function
 
-function construyeAnimal(nombre , edad){
-    return{
-        nombre: nombre,
-        edad: edad
+// function construyeAnimal(nombre , edad){
+//     return{
+//         nombre: nombre,
+//         edad: edad
 
-    };
-}
+//     };
+// }
 
-let miAnimal=construyeAnimal("perico",3);
-console.log(miAnimal);
-//create a nother way of doing the same
-let crearAnimal = (nombre,edad)=>{
-    {nombre,edad}
-};
+// let miAnimal=construyeAnimal("perico",3);
+// console.log(miAnimal);
+// //create a nother way of doing the same
+// let crearAnimal = (nombre,edad)=>{
+//     {nombre,edad}
+// };
 
-let miAnimal2=crearAnimal("fufo",5);
-console.log(miAnimal2);
+// let miAnimal2=crearAnimal("fufo",5);
+// console.log(miAnimal2);
 
-//access obbjetos propierties
-//using a dot
+// //access obbjetos propierties
+// //using a dot
 
-console.log(persona2.nombre);
-console.log(persona3.saluda);
-//añadiendo mas propiedades despues de que el objeto haya sido creado
+// console.log(persona2.nombre);
+// console.log(persona3.saluda);
+// //añadiendo mas propiedades despues de que el objeto haya sido creado
 
-console.log(persona);
-persona.nombre="hilario";
-persona["direccion completa"] = "calle pez","nº3";
-console.log(persona);
+// console.log(persona);
+// persona.nombre="hilario";
+// persona["direccion completa"] = "calle pez","nº3";
+// console.log(persona);
 
 Object.defineProperty(persona,'profesion',{
     value: 'ascensorista',
     writable: false,  //no puede cambiar el valor
     enumerable: false, //no puede ser iterado
     configurable: false, //no puede ser borrado
-});
+});{
+    despidete(texto){
+        console.log(texto);
+     }
+};
 
-console.log(persona.profesion);
+// console.log(persona.profesion);
+
+Object.seal(persona);
+Object.preventExtensions(persona);//no te deja crear atributos nuevos
+
