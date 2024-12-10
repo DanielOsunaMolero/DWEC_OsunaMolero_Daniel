@@ -1,3 +1,9 @@
+/*
+Enlace a GitHub
+
+https://github.com/DanielOsunaMolero/DWEC_OsunaMolero_Daniel/blob/ramal/Proyecto%20primer%20trimestre%20Daniel%20Osuna/Proyecto.js*/ 
+
+
 /**
      Clase Direccion
     Representa la dirección de un estudiante.
@@ -24,7 +30,6 @@
                 throw new Error("El código postal debe tener exactamente 5 dígitos.");
             }
             this._codPostal = codPostal;
-    
             this._provincia = provincia;
             this._localidad = localidad;
         }
@@ -106,8 +111,9 @@ class Persona {
     _asignaturas (Array):
     Lista de asignaturas en las que el estudiante está matriculado. Cada elemento del array es un objeto que contiene:
 
-    asignatura (Asignatura): Una instancia de la clase Asignatura.
-    fechaMatricula (string): Fecha en formato DD/MM/AAAA que indica cuándo el estudiante se matriculó en la asignatura.
+    1.asignatura (Asignatura): Una instancia de la clase Asignatura.
+    2.fechaMatricula (string): Fecha en formato DD/MM/AAAA que indica cuándo el estudiante se matriculó en la asignatura.
+
     Métodos:
 
     1.constructor(id, nombre, edad, direccion) Inicializa un nuevo estudiante con los datos proporcionados.
@@ -207,7 +213,7 @@ class Estudiante extends Persona {
         let sumaTotalNotas = 0;
         let cantidadTotalNotas = 0;
     
-        for (const asignaturaObj of this._asignaturas) {
+        for (const asignaturaObj of this._asignaturas) { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
             const asignatura = asignaturaObj.asignatura;
             const notas = asignatura.obtenerNotas(this);
     
@@ -231,9 +237,10 @@ class Estudiante extends Persona {
     Representa una asignatura que contiene estudiantes matriculados y sus calificaciones.
 
     Atributos:
-    nombre: (Cadena) Nombre de la asignatura.
-    listaEstudiantes: (Array) Lista de estudiantes matriculados en la asignatura.
-    calificaciones: (Array) Lista de objetos { estudiante, calificaciones } que almacenan las calificaciones de cada estudiante.
+    -nombre: (Cadena) Nombre de la asignatura.
+    -listaEstudiantes: (Array) Lista de estudiantes matriculados en la asignatura.
+    -calificaciones: (Array) Lista de objetos { estudiante, calificaciones } que almacenan las calificaciones de cada estudiante.
+
     Métodos:
     1.constructor(nombre) Inicializa una nueva asignatura con el nombre proporcionado.
 
@@ -270,12 +277,13 @@ class Asignatura {
         if (!this.calificaciones.some(c => c.estudiante === estudiante)) {
             this.calificaciones.push({
                 estudiante: estudiante,
-                calificaciones: [] // Inicializa un array vacío para las calificaciones
+                calificaciones: [] // Inicializa un array vacío
             });
         }
     }
 
     eliminarEstudiante(estudiante) {
+        //Validaciones
         if (!(estudiante instanceof Estudiante)) {
             throw new Error("El estudiante debe ser una instancia de la clase Estudiante.");
         }
@@ -292,6 +300,7 @@ class Asignatura {
     }
 
     asignarNota(estudiante, nota) {
+        //Validaciones
         if (!(estudiante instanceof Estudiante)) {
             throw new Error("El estudiante debe ser una instancia de la clase Estudiante.");
         }
@@ -364,6 +373,8 @@ class ListaEstudiantes {
                 throw new Error("Ya existe un estudiante con el mismo nombre y dirección.");
             }
         }
+
+        //Validaciones
         if (!nombre || typeof nombre !== "string" || !/^[a-zA-Z\s]+$/.test(nombre)) {
             throw new Error("Nombre inválido: debe contener solo letras y espacios.");
         }
@@ -388,11 +399,13 @@ class ListaEstudiantes {
     
         const estudiante = this.listaEstudiantes[id];
     
-        //desmatricula de todas las asignaturas
-        estudiante.asignaturas.forEach(asignaturaObj => {
+        //Desmatricula de todas las asignaturas
+        estudiante.asignaturas.forEach(asignaturaObj =>  // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
+            {
             const asignatura = asignaturaObj.asignatura;
             estudiante.desmatricular(asignatura);
-        });
+        }
+    );
     
         
         delete this.listaEstudiantes[id];
@@ -400,7 +413,6 @@ class ListaEstudiantes {
     }
     
     
-
     obtenerEstudiantePorID(id) {
         const estudiante = this.listaEstudiantes[id];
         if (!estudiante) {
@@ -415,7 +427,7 @@ class ListaEstudiantes {
             const estudiante = this.listaEstudiantes[id];
             console.log(`ID: ${estudiante.id}, Nombre: ${estudiante.nombre}`);
             console.log("Asignaturas:");
-            estudiante.asignaturas.forEach(asignaturaObj => {
+            estudiante.asignaturas.forEach(asignaturaObj => { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
                 const asignatura = asignaturaObj.asignatura;
                 const notas = asignatura.obtenerNotas(estudiante);
                 const promedio = asignatura.promedio(estudiante);
@@ -430,11 +442,11 @@ class ListaEstudiantes {
     
         for (const id in this.listaEstudiantes) {
             const estudiante = this.listaEstudiantes[id];
-            for (const asignaturaObj of estudiante.asignaturas) {
-                // Asegúrate de acceder a `asignatura` dentro del objeto
+            for (const asignaturaObj of estudiante.asignaturas) { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
+                
                 const asignatura = asignaturaObj.asignatura;
     
-                if (asignatura && typeof asignatura.obtenerNotas === 'function') {
+                if (asignatura) {
                     const notas = asignatura.obtenerNotas(estudiante);
                     for (let i = 0; i < notas.length; i++) {
                         sumaTotal += notas[i];
@@ -448,7 +460,7 @@ class ListaEstudiantes {
             return "No hay calificaciones disponibles para calcular el promedio general.";
         }
     
-        return (sumaTotal / cantidadNotas).toFixed(2);
+        return (sumaTotal / cantidadNotas).toFixed(2); //Contamos hasta dos decimales
     }
     
       
@@ -715,19 +727,13 @@ function Menu_mostrarEstudiantes() {
         if (estudiante.asignaturas.length === 0) {
             console.log("- No tiene asignaturas matriculadas.");
         } else {
-            estudiante.asignaturas.forEach(asignaturaObj => {
+            estudiante.asignaturas.forEach(asignaturaObj => { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
                 console.log(`  - ${asignaturaObj.asignatura.nombre} (Fecha de matrícula: ${asignaturaObj.fechaMatricula})`);
             });
             
         }
     }
 }
-
-
-
-
-
-
 
 function Menu_mostrarAsignaturas() {
     console.log("Asignaturas registradas:");
@@ -809,7 +815,7 @@ function Menu_buscarEstudiante() {
     const patron = prompt("Introduce el patrón de búsqueda para buscar al estudiante:");
     const resultados = [];
 
-    // Iterar sobre los estudiantes en PlistaEstudiantes
+    
     for (const id in PlistaEstudiantes.listaEstudiantes) {
         const estudiante = PlistaEstudiantes.listaEstudiantes[id];
 
@@ -818,13 +824,13 @@ function Menu_buscarEstudiante() {
         }
     }
 
-    // Comprobar si hay resultados
+    
     if (resultados.length === 0) {
         console.log("No se encontraron estudiantes que comiencen con ese patrón.");
     } else {
         console.log("Estudiantes encontrados:");
         resultados.forEach(function(estudiante) {
-            console.log(estudiante.toString()); // Usa el método toString() de la clase Estudiante
+            console.log(estudiante.toString()); 
         });
     }
 }
