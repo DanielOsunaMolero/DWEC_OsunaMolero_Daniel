@@ -725,6 +725,10 @@ function Menu_mostrarEstudiantes() {
 
 
 
+
+
+
+
 function Menu_mostrarAsignaturas() {
     console.log("Asignaturas registradas:");
     for (const asignatura of asignaturas) {
