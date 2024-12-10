@@ -531,7 +531,6 @@ function inicializarDatos() {
     console.log("Datos inicializados correctamente.");
 }
 
-
 // Menú principal
 function Menu_principal() {
     let opcion;
