@@ -536,6 +536,7 @@ function Menu_principal() {
     let opcion;
     do {
         opcion = prompt(
+            
             "=== Menú Principal ===\n" +
             "1. Añadir estudiante\n" +
             "2. Eliminar estudiante\n" +
