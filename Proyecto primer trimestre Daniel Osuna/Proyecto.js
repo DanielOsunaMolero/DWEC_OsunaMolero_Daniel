@@ -141,7 +141,7 @@ class Estudiante extends Persona {
     constructor(id, nombre, edad, direccion) {
         super(nombre, edad, direccion); // Llama al constructor de Persona
         this._id = id;
-        this._asignaturas = [];
+        this._asignaturas = [];//{asignatura , fechaMatricula}
     }
 
     get id() {
@@ -204,7 +204,11 @@ class Estudiante extends Persona {
         }
         
         this._asignaturas.splice(indice, 1);
-        asignatura.eliminarEstudiante(this);
+        //asignatura.eliminarEstudiante(this);
+        const asignaturaIndex = asignatura.listaEstudiantes.indexOf(this);
+        if (asignaturaIndex !== -1) {
+            asignatura.listaEstudiantes.splice(asignaturaIndex, 1);  
+        }
         const fechaDesmatriculacion = new Date().toLocaleDateString("es-ES");
         console.log(`Desmatriculado de ${asignatura.nombre} el ${fechaDesmatriculacion}.`);
     }
@@ -246,7 +250,7 @@ class Estudiante extends Persona {
 
     2.agregarEstudiante(estudiante) Añade un estudiante a la lista de la asignatura e inicializa su registro de calificaciones.
 
-    3.eliminarEstudiante(estudiante) Elimina un estudiante de la lista de la asignatura y su registro de calificaciones.
+    3.eliminarEstudiante(estudiante) Elimina un estudiante de la lista de la asignatura y su registro de calificaciones. //corregido y borrado por que no tiene sentido
 
     4.asignarNota(estudiante, nota) Añade una calificación al estudiante en esta asignatura.
 
@@ -392,7 +396,7 @@ class ListaEstudiantes {
         this.idActual++;
     }
 
-    eliminarEstudiante(id) {
+    eliminarEstudianteID(id) {
         if (!this.listaEstudiantes[id]) {
             throw new Error(`No se encontró un estudiante con este ID`);
         }
@@ -405,9 +409,9 @@ class ListaEstudiantes {
             const asignatura = asignaturaObj.asignatura;
             estudiante.desmatricular(asignatura);
         }
+        
     );
     
-        
         delete this.listaEstudiantes[id];
         console.log(`Estudiante con ID ${id} eliminado con éxito.`);
     }
@@ -436,33 +440,53 @@ class ListaEstudiantes {
         }
     }
 
-    promedioGeneral() {
-        let sumaTotal = 0;
-        let cantidadNotas = 0;
+    // promedioGeneral() {
+    //     let sumaTotal = 0;
+    //     let cantidadNotas = 0;
     
-        for (const id in this.listaEstudiantes) {
-            const estudiante = this.listaEstudiantes[id];
-            for (const asignaturaObj of estudiante.asignaturas) { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
+    //     for (const id in this.listaEstudiantes) {
+    //         const estudiante = this.listaEstudiantes[id];
+    //         for (const asignaturaObj of estudiante.asignaturas) { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
                 
-                const asignatura = asignaturaObj.asignatura;
+    //             const asignatura = asignaturaObj.asignatura;
     
-                if (asignatura) {
-                    const notas = asignatura.obtenerNotas(estudiante);
-                    for (let i = 0; i < notas.length; i++) {
-                        sumaTotal += notas[i];
-                        cantidadNotas++;
-                    }
-                }
+    //             if (asignatura) {
+    //                 const notas = asignatura.obtenerNotas(estudiante);
+    //                 for (let i = 0; i < notas.length; i++) {
+    //                     sumaTotal += notas[i];
+    //                     cantidadNotas++;
+    //                 }
+    //             }
+    //         }
+    //     }
+    
+    //     if (cantidadNotas === 0) {
+    //         return "No hay calificaciones disponibles para calcular el promedio general.";
+    //     }
+    
+    //     return (sumaTotal / cantidadNotas).toFixed(2); //Contamos hasta dos decimales
+    // }
+    
+
+    promedioGeneral(){
+        let sumaTotal = 0;
+        let cantidadEstudiantes = 0;
+
+        for(const id in this.listaEstudiantes){
+            const estudiante = this.listaEstudiantes[id];
+            const promedio = estudiante.promedioIndividual;
+
+            if(!promedio ==="No hay calificaciones disponibles"){
+                sumaTotal += parseFloat(promedio);
+                cantidadEstudiantes++;
             }
         }
-    
-        if (cantidadNotas === 0) {
+        if(cantidadEstudiantes ===0){
             return "No hay calificaciones disponibles para calcular el promedio general.";
         }
-    
-        return (sumaTotal / cantidadNotas).toFixed(2); //Contamos hasta dos decimales
+
+        return (sumaTotal / cantidadEstudiantes).toFixed(2); // Promedio general de los estudiantes
     }
-    
       
 }
 
@@ -633,7 +657,7 @@ function Menu_añadirEstudiante() {
 function Menu_eliminarEstudiante(){
 
     const id = parseInt(prompt("Introduce el ID del estudiante que deseas eliminar:"), 10);
-    PlistaEstudiantes.eliminarEstudiante(id);
+    PlistaEstudiantes.eliminarEstudianteID(id);
 }
 
 function Menu_añadirAsignatura() {
