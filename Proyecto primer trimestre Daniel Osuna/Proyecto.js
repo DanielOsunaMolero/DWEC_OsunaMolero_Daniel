@@ -20,6 +20,8 @@ https://github.com/DanielOsunaMolero/DWEC_OsunaMolero_Daniel/blob/ramal/Proyecto
 
     2.Getters (calle, numero, piso, codPostal, provincia, localidad) Devuelven los valores correspondientes de la dirección.
  */
+
+    
     class Direccion {
         constructor(calle, numero, piso, codPostal, provincia, localidad) {
             this._calle = calle;
@@ -184,27 +186,23 @@ class Estudiante extends Persona {
     }
 
     desmatricular(asignatura) {
+         
+
         if (!(asignatura instanceof Asignatura)) {
             throw new Error("La asignatura debe ser una instancia de la clase Asignatura.");
         }
     
-        let indice = -1; 
-    
-        
-        for (let i = 0; i < this._asignaturas.length; i++) {
-            if (this._asignaturas[i].asignatura === asignatura) {
-                indice = i;
-                break;
-            }
+        /*Un estudiante no se desmatricule de una asignatura que no esta matriculado*/
+        /*Usar el findIndex */
+        const indice = this._asignaturas.findIndex(asignaturaObj => asignaturaObj.asignatura == asignatura);
+
+        if (indice == -1) {
+            throw new Error("El estudiante no está matriculado en esta asignatura, no se puede desmatricular.");
         }
-    
-        // Si no se encontró la asignatura, lanza un error (bandera)
-        if (indice === -1) {
-            throw new Error(`El estudiante no está matriculado en ${asignatura.nombre}.`);
-        }
+
         
-        this._asignaturas.splice(indice, 1);
-        //asignatura.eliminarEstudiante(this);
+        this._asignaturas.splice(indice, 1); // solo borra un valor
+        
         const asignaturaIndex = asignatura.listaEstudiantes.indexOf(this);
         if (asignaturaIndex !== -1) {
             asignatura.listaEstudiantes.splice(asignaturaIndex, 1);  
@@ -214,18 +212,18 @@ class Estudiante extends Persona {
     }
     
     promedioIndividual() {
-        let sumaTotalNotas = 0;
-        let cantidadTotalNotas = 0;
+        /*Usar el reduce*/
+        const { sumaTotalNotas, cantidadTotalNotas } = this._asignaturas.reduce((acumulador, asignaturaObj) => {
+
+            const notas = asignaturaObj.asignatura.obtenerNotas(this);
     
-        for (const asignaturaObj of this._asignaturas) { // asignaturaObj es un objeto compuesto por {asignatura , fechaMatricula} , asi podremos acceder a asignatura.nombre
-            const asignatura = asignaturaObj.asignatura;
-            const notas = asignatura.obtenerNotas(this);
+            acumulador.sumaTotalNotas += notas.reduce((suma, nota) => suma + nota, 0); //suma total de las notas de cada asignatura especifica
+            acumulador.cantidadTotalNotas += notas.length;
     
-            for (const nota of notas) {
-                sumaTotalNotas += nota;
-                cantidadTotalNotas++;
-            }
-        }
+            return acumulador;
+        }, { sumaTotalNotas: 0, cantidadTotalNotas: 0 }); //asi se inicializa
+
+
     
         if (cantidadTotalNotas === 0) {
             return "No hay calificaciones disponibles.";
@@ -706,7 +704,7 @@ function Menu_matricularEstudiante() {
     }
 
     estudiante.matricular(asignatura);
-    console.log(`Estudiante ${estudiante.nombre} matriculado en ${asignatura.nombre}.`);
+    console.log(`Estudiante ${estudiante.nombre} matriculado en ${asignatura.nombre} .`);
 }
 
 function Menu_desmatricularEstudiante() {
@@ -721,7 +719,7 @@ function Menu_desmatricularEstudiante() {
     }
 
     estudiante.desmatricular(asignatura);
-    console.log(`Estudiante ${estudiante.nombre} desmatriculado de ${asignatura.nombre}.`);
+    console.log(`Estudiante ${estudiante.nombre} desmatriculado de ${asignatura.nombre} .`);
 }
 
 function Menu_asignarNota() {
